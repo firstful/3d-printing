@@ -15,6 +15,9 @@ off-the-shelf tube/wood stock, rather than a fully printed chair.
 - `DESIGN_NOTES.md` — requirements and planned architecture
 - `params.scad` — all design dimensions (mm), edit this first
 - `adaptive-highchair.scad` — concept geometry; `include`s `params.scad`
+- `render.sh` — regenerates `preview.png` from the `.scad`
+
+![Concept blockout](preview.png)
 
 ## Status
 

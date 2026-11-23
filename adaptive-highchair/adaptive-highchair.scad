@@ -43,8 +43,9 @@ module frame() {
     }
 }
 
-frame();
-seat();
-back();
-footrest();
-tray();
+// Colours are for preview renders only; they do not affect geometry.
+color("Silver") frame();
+color("SteelBlue") seat();
+color("DarkSlateBlue") back();
+color("SaddleBrown") footrest();
+color("BurlyWood") tray();
