@@ -11,6 +11,7 @@ rebuild.
 |---|---|---|
 | [`adaptive-highchair/`](adaptive-highchair/) | Parametric adaptive high-chair concept (research/blockout) | — (render only) |
 | [`hex-ramp/`](hex-ramp/) | 18 in half-ramp lightened with a tileable hex through-hole lattice | `ramp_half_hex.stl`, `ramp_half_hex.3mf` |
+| [`hex-ramp-clip/`](hex-ramp-clip/) | Two-peg seam clip that joins two 228.6 mm hex ramp halves into the full 18 in ramp | `stl/hex_ramp_clip_{tight,medium,loose}.stl` |
 | [`fishtank-gantry/`](fishtank-gantry/) | Rim-mounted gantry that carries a float valve and siphon hose over a fish tank | `fishtank-gantry.3mf`, `stl/*.stl` |
 | [`rocket-shelf/`](rocket-shelf/) | Two-part magnetic shelf (body + magnet-pocket shelf) derived from the Rocket Shelf System | `stl/ref_obj*.stl` (reference meshes) |
 | [`rocket-toniebox-holder/`](rocket-toniebox-holder/) | Replacement magnet discs (Ø36 × 2.8 mm) for the Rocket Toniebox holder | `discs_magnet.stl`, `rocket-toniebox-holder.3mf` |
