@@ -1,19 +1,20 @@
 // adaptive-highchair parameters — all units mm
-// Home Depot stock, no cutting, splayed legs. See OFF_THE_SHELF.md.
+// Home Depot stock, straight cuts to length, splayed legs. See BOM.md.
 
-/* [Stock — buy full lengths, cut nothing] */
-TUBE          = 25.4;   // 1" square aluminium tube (nominal)
-LEG_STOCK     = 914.4;  // 3 ft Everbilt 6615, used as-is
-RAIL_STOCK    = 304.8;  // 1 ft LUKVIZO piece, used as-is
+/* [Stock — straight cuts to length, see BOM.md] */
+TUBE          = 19.05;  // 3/4" square aluminium tube, nominal
+TUBE_WALL     = 1.59;   // 1/16" wall
+LEG_LEN       = 760;    // cut leg length
+RAIL_LEN      = 450;    // cut rail length
 
 /* [Frame — splayed outward] */
 BASE_SPAN_X   = 640;    // foot footprint width
 BASE_SPAN_Y   = 700;    // foot footprint depth
 TOP_SPAN_X    = 400;    // leg spacing at the top
 TOP_SPAN_Y    = 460;
-SPLAY_X       = asin((BASE_SPAN_Y - TOP_SPAN_Y) / 2 / LEG_STOCK);
-SPLAY_Y       = asin((BASE_SPAN_X - TOP_SPAN_X) / 2 / LEG_STOCK);
-FRAME_TOP     = LEG_STOCK * cos(SPLAY_X) * cos(SPLAY_Y);
+SPLAY_X       = asin((BASE_SPAN_Y - TOP_SPAN_Y) / 2 / LEG_LEN);
+SPLAY_Y       = asin((BASE_SPAN_X - TOP_SPAN_X) / 2 / LEG_LEN);
+FRAME_TOP     = LEG_LEN * cos(SPLAY_X) * cos(SPLAY_Y);
 
 /* [Seat] */
 SEAT_W        = 240;
@@ -44,8 +45,10 @@ TRAY_NOTCH_W  = 300;
 TRAY_NOTCH_D  = 100;
 
 /* [Hardware / strap] */
-HARDWARE_D    = 6.35;  // 1/4" bolts through printed hubs
-STRAP_W       = 25;    // 1" webbing; commercial 5-point harness
+HARDWARE_D    = 5;     // M5 screws — see BOM.md
+CLEAR_HOLE_D  = 5.2;   // M5 clearance; drill only, no tapping
+INSERT_L      = 25;    // captive-nut insert length (nut_insert.scad)
+STRAP_W       = 25;    // 1" webbing, heat-seal cut ends
 STRAP_CLEAR   = 1;
 
 /* [Print] */

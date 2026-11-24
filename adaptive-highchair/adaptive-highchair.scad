@@ -10,18 +10,16 @@ module upright(sx, sy) {
     translate([sx * BASE_SPAN_X / 2 - TUBE / 2,
                sy * BASE_SPAN_Y / 2 - TUBE / 2, 0])
         rotate([sy * SPLAY_X, -sx * SPLAY_Y, 0])
-            cube([TUBE, TUBE, LEG_STOCK], center = false);
+            cube([TUBE, TUBE, LEG_LEN], center = false);
 }
 
 module rails() {
-    // Two 1 ft stock pieces per side, joined by a printed sleeve at centre.
+    // One cut-to-length rail per side; M5 through-bolts at each leg.
     rail_y = BASE_SPAN_Y / 2 -
              (BASE_SPAN_Y - TOP_SPAN_Y) / 2 * SEAT_H / FRAME_TOP;
     for (sy = [-1, 1]) {
-        translate([-RAIL_STOCK, sy * rail_y - TUBE / 2, SEAT_H])
-            cube([RAIL_STOCK, TUBE, TUBE], center = false);
-        translate([0, sy * rail_y - TUBE / 2, SEAT_H])
-            cube([RAIL_STOCK, TUBE, TUBE], center = false);
+        translate([-RAIL_LEN / 2, sy * rail_y - TUBE / 2, SEAT_H])
+            cube([RAIL_LEN, TUBE, TUBE], center = false);
     }
 }
 

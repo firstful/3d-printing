@@ -15,19 +15,19 @@
 | Tray | ~600 × 500 mm with body cut-out | TherAdapt 24 × 20", cut-out 17½ × 4" |
 | Restraint | 5-point harness + separate pelvic belt anchors | All mainstream + adaptive products |
 | Adjustment | tool-free sliding collars on legs | Rifton, OXO |
-| Footprint / splay | 640 × 700 mm base, 400 × 460 mm at top, legs ~10° outward | stability, no-cut stock lengths |
+| Footprint / splay | 640 × 700 mm base, 400 × 460 mm at top, legs ~10° outward | stability, cut-to-length stock |
 
 ## Architecture
 
-Revised 2026-11-24 after `OFF_THE_SHELF.md` research: the frame is **1" square
-aluminium tube from Home Depot**, used in full stock lengths with **no cutting**.
-All four legs splay outward for stability. Size changes happen by sliding
-printed collars along the legs, not by drilling or mitring tube.
+Revised 2026-11-24: the frame is **3/4" square aluminium tube from Home Depot**,
+cut to length (straight cuts only) with a printed miter jig. All four legs
+splay outward ~10° for stability. Joints use M5 through-bolts with Nyloc nuts
+captured by printed inserts (`nut_insert.scad`) — no tapping, no drilling
+beyond clearance holes.
 
-1. **Frame** — four full 3 ft (914 mm) Everbilt legs, splayed ~10°, plus 1 ft
-   rail pieces. Printed hubs with angled sockets set the splay; set screws or
-   ¼-20 through-bolts lock each joint. Footprint 640 × 700 mm, leg tops
-   400 × 460 mm, frame height ~868 mm.
+1. **Frame** — four 760 mm legs, splayed ~10°, plus 450 mm rail pieces.
+   Printed hubs with angled sockets set the splay; M5 through-bolts lock each
+   joint. Footprint 640 × 700 mm, leg tops 400 × 460 mm, frame height ~740 mm.
 2. **Seat module** — printed pan with slots for depth and width inserts;
    pivots on the frame for tilt.
 3. **Back module** — printed panel carrier with vertical slots for back
@@ -40,17 +40,17 @@ printed collars along the legs, not by drilling or mitring tube.
 
 ## Open questions
 
-- Confirm local stock/price of Everbilt 3 ft and LUKVIZO 1 ft 1" square tube.
+- Confirm local stock/price of Everbilt 3/4" 3 ft and 6 ft 1/16" wall tube.
 - Which commercial 5-point harness to design the anchors around (25 mm webbing).
 - Target growth range: 6–36 months only, or extend to Rifton-style paediatric
   sizing?
 - Folding/stacking needed, or static frame acceptable?
-- Required proof-load factor for T-slot joints and printed clamp plates.
+- Required proof-load factor for M5 joints and printed clamp plates.
 - Print material: PETG for brackets vs. PA/GF for load-bearing clamps.
 
 ## Next steps
 
 - Model the printed angled hub and validate the splay angle against a real
-  1" tube sample.
+  3/4" tube sample.
 - Add the slotted tilt plate and validate adjustment ranges in OpenSCAD.
-- Prototype one clamp and test fit before printing the full set.
+- Prototype one nut insert + drill jig and test fit before printing the full set.
