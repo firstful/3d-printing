@@ -33,7 +33,16 @@ R_hex     = insert_af / sqrt(3);
 slope     = 0.130691;   // ramp surface slope
 theta     = atan(slope);
 
-post_len  = 15.92;      // top surface -> floor at the hole centre
+post_len  = 3.42;       // driving surface -> the curved underside (band thickness)
+
+// the rolled transition's underside, measured on the ramp
+arc_cx    = 63.00;      // in ramp coordinates (hole centre at x = 16.189)
+arc_cy    = -96.64;
+arc_r     = 118.82;
+hole_x    = 16.189;     // part local origin is this hole's centre on the surface
+y_face    = 0.130691 * hole_x + 13.8003;   // surface height there (ramp coords)
+arc_lx    = arc_cx - hole_x;               // arc centre in part-local coords
+arc_ly    = arc_cy - y_face;
 
 // screw detent (M3 countersunk)
 screw_x   = 3.0;
@@ -80,11 +89,22 @@ module below_face() {
 }
 
 // -------------------------------- body -------------------------------------
+// region below the rolled transition's underside (arc, measured)
+module below_arc() {
+    R = arc_r; CX = arc_lx; CY = arc_ly;
+    pts = [for (x = [-20:0.5:40]) [x, CY + sqrt(R * R - (x - CX) * (x - CX))]];
+    translate([0, 0, -40]) linear_extrude(height = 80)
+        polygon(concat(pts, [[40, -40], [-20, -40]]));
+}
+
 module post() {
-    intersection() {
-        translate([0, -post_len, 0]) rotate([-90, 0, 0])
-            linear_extrude(height = post_len + 4) hex2d(insert_af);
-        below_face();
+    difference() {
+        intersection() {
+            translate([0, -12, 0]) rotate([-90, 0, 0])
+                linear_extrude(height = 16) hex2d(insert_af);
+            below_face();
+        }
+        below_arc();
     }
 }
 
@@ -141,12 +161,10 @@ module part_open(k) {
         }
         // screw clearance, vertical through the post
         translate([screw_x, -post_len - 1, 0]) rotate([-90, 0, 0])
-            cylinder(h = yf + post_len, r = screw_d / 2);
+            cylinder(h = yf + 12, r = screw_d / 2);
         // countersink, flush with the face
         translate([screw_x, yf - cs_depth, 0])
             cylinder(h = cs_depth + 0.2, r1 = screw_d / 2, r2 = cs_d / 2);
-        // floor cut
-        translate([-200, -200, -200]) cube([400, 200 - post_len, 400]);
     }
     rotate([0, 0, theta]) translate([-travel * k, 0, 0]) slider();
 }
