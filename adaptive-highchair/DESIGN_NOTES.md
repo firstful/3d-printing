@@ -14,16 +14,20 @@
 | Lateral supports | 140–355 mm spacing | Rifton trunk support / hip guides |
 | Tray | ~600 × 500 mm with body cut-out | TherAdapt 24 × 20", cut-out 17½ × 4" |
 | Restraint | 5-point harness + separate pelvic belt anchors | All mainstream + adaptive products |
-| Adjustment | tool-free levers/detents | Rifton, OXO |
+| Adjustment | tool-free sliding collars on legs | Rifton, OXO |
+| Footprint / splay | 640 × 700 mm base, 400 × 460 mm at top, legs ~10° outward | stability, no-cut stock lengths |
 
 ## Architecture
 
-Revised 2026-11-24 after `OFF_THE_SHELF.md` research: the frame stock is now
-**20 × 20 mm T-slot extrusion** with M5 sliding nuts, not welded square tube.
-Size changes become bolt repositioning instead of drilling or tube fitting.
+Revised 2026-11-24 after `OFF_THE_SHELF.md` research: the frame is **1" square
+aluminium tube from Home Depot**, used in full stock lengths with **no cutting**.
+All four legs splay outward for stability. Size changes happen by sliding
+printed collars along the legs, not by drilling or mitring tube.
 
-1. **Frame** — off-the-shelf 2020 extrusion posts and rails, joined by printed
-   clamp plates. Keeps printed volume small and avoids printing long spans.
+1. **Frame** — four full 3 ft (914 mm) Everbilt legs, splayed ~10°, plus 1 ft
+   rail pieces. Printed hubs with angled sockets set the splay; set screws or
+   ¼-20 through-bolts lock each joint. Footprint 640 × 700 mm, leg tops
+   400 × 460 mm, frame height ~868 mm.
 2. **Seat module** — printed pan with slots for depth and width inserts;
    pivots on the frame for tilt.
 3. **Back module** — printed panel carrier with vertical slots for back
@@ -36,7 +40,7 @@ Size changes become bolt repositioning instead of drilling or tube fitting.
 
 ## Open questions
 
-- Confirm local supply and price of 2020 extrusion + M5 sliding-nut kits.
+- Confirm local stock/price of Everbilt 3 ft and LUKVIZO 1 ft 1" square tube.
 - Which commercial 5-point harness to design the anchors around (25 mm webbing).
 - Target growth range: 6–36 months only, or extend to Rifton-style paediatric
   sizing?
@@ -46,6 +50,7 @@ Size changes become bolt repositioning instead of drilling or tube fitting.
 
 ## Next steps
 
-- Parameterise the tube cross-section and clamp wall thickness in `params.scad`.
+- Model the printed angled hub and validate the splay angle against a real
+  1" tube sample.
 - Add the slotted tilt plate and validate adjustment ranges in OpenSCAD.
 - Prototype one clamp and test fit before printing the full set.

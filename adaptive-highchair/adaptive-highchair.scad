@@ -1,12 +1,28 @@
 // adaptive-highchair — concept blockout
-// NOT a safety-tested product. See README.md and RESEARCH.md.
+// NOT a safety-tested product. See README.md, RESEARCH.md, OFF_THE_SHELF.md.
 // Units: mm. All inputs live in params.scad.
+// Frame uses full-length Home Depot tube stock: no cuts, splayed legs.
 
 include <params.scad>
 
-module upright(x, y, h) {
-    translate([x, y, 0])
-        cube([TUBE, TUBE, h], center = false);
+module upright(sx, sy) {
+    // Each leg tilts inward toward the top so the feet splay outward.
+    translate([sx * BASE_SPAN_X / 2 - TUBE / 2,
+               sy * BASE_SPAN_Y / 2 - TUBE / 2, 0])
+        rotate([sy * SPLAY_X, -sx * SPLAY_Y, 0])
+            cube([TUBE, TUBE, LEG_STOCK], center = false);
+}
+
+module rails() {
+    // Two 1 ft stock pieces per side, joined by a printed sleeve at centre.
+    rail_y = BASE_SPAN_Y / 2 -
+             (BASE_SPAN_Y - TOP_SPAN_Y) / 2 * SEAT_H / FRAME_TOP;
+    for (sy = [-1, 1]) {
+        translate([-RAIL_STOCK, sy * rail_y - TUBE / 2, SEAT_H])
+            cube([RAIL_STOCK, TUBE, TUBE], center = false);
+        translate([0, sy * rail_y - TUBE / 2, SEAT_H])
+            cube([RAIL_STOCK, TUBE, TUBE], center = false);
+    }
 }
 
 module seat() {
@@ -35,16 +51,11 @@ module tray() {
         }
 }
 
-module frame() {
-    for (sx = [-1, 1], sy = [-1, 1]) {
-        upright(sx * LEG_SPAN_X / 2 - TUBE / 2,
-                sy * LEG_SPAN_Y / 2 - TUBE / 2,
-                FRAME_TOP);
-    }
-}
-
 // Colours are for preview renders only; they do not affect geometry.
-color("Silver") frame();
+color("Silver") {
+    for (sx = [-1, 1], sy = [-1, 1]) upright(sx, sy);
+    rails();
+}
 color("SteelBlue") seat();
 color("DarkSlateBlue") back();
 color("SaddleBrown") footrest();
