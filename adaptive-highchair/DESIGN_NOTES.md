@@ -18,8 +18,12 @@
 
 ## Architecture
 
-1. **Frame** — square tube (planned 25 mm), joined by printed clamp collars.
-   Keeps printed volume small and avoids printing long structural spans.
+Revised 2026-11-24 after `OFF_THE_SHELF.md` research: the frame stock is now
+**20 × 20 mm T-slot extrusion** with M5 sliding nuts, not welded square tube.
+Size changes become bolt repositioning instead of drilling or tube fitting.
+
+1. **Frame** — off-the-shelf 2020 extrusion posts and rails, joined by printed
+   clamp plates. Keeps printed volume small and avoids printing long spans.
 2. **Seat module** — printed pan with slots for depth and width inserts;
    pivots on the frame for tilt.
 3. **Back module** — printed panel carrier with vertical slots for back
@@ -32,11 +36,12 @@
 
 ## Open questions
 
-- Which tube/wood stock size is available locally?
+- Confirm local supply and price of 2020 extrusion + M5 sliding-nut kits.
+- Which commercial 5-point harness to design the anchors around (25 mm webbing).
 - Target growth range: 6–36 months only, or extend to Rifton-style paediatric
   sizing?
 - Folding/stacking needed, or static frame acceptable?
-- Harness hardware source and required proof-load factor.
+- Required proof-load factor for T-slot joints and printed clamp plates.
 - Print material: PETG for brackets vs. PA/GF for load-bearing clamps.
 
 ## Next steps

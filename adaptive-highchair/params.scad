@@ -14,11 +14,19 @@ BACK_H        = 400;   // 15.7"
 BACK_T        = 14;
 BACK_RECLINE  = 8;     // degrees
 
-/* [Frame] */
-TUBE          = 25;    // square stock size
+/* [Frame] — off-the-shelf 2020 T-slot extrusion, see OFF_THE_SHELF.md */
+TUBE          = 20;    // 20 x 20 mm extrusion profile
 LEG_SPAN_X    = 500;
 LEG_SPAN_Y    = 540;
 FRAME_TOP     = 700;
+
+/* [Hardware] */
+SLOT_PITCH    = 40;    // nominal bracket hole spacing along extrusion
+HARDWARE_D    = 5;     // M5 sliding nuts and bolts
+
+/* [Strap] */
+STRAP_W       = 25;    // 1" nylon webbing; use a commercial 5-point harness
+STRAP_CLEAR   = 1;     // slot clearance per side
 
 /* [Footrest] */
 FOOT_W        = 240;

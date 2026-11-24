@@ -12,6 +12,7 @@ off-the-shelf tube/wood stock, rather than a fully printed chair.
 ## Files
 
 - `RESEARCH.md` — commercial product specs and extracted design inputs
+- `OFF_THE_SHELF.md` — frame hardware, size-adjustment parts, strap materials
 - `DESIGN_NOTES.md` — requirements and planned architecture
 - `params.scad` — all design dimensions (mm), edit this first
 - `adaptive-highchair.scad` — concept geometry; `include`s `params.scad`
