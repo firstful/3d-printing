@@ -1,0 +1,20 @@
+IMPORTANT — supersedes stl/fan_adapter.stl
+
+BUG: fan_flange_base() cut the 76x76 inlet throat with a cube translated to
+z=-1 (height flange_t+2 = 7), so the cutter only reached z=+2.5. The top half
+of the 5 mm fan flange (z=2.5..5) was left as a solid 88x88 plate, blocking
+all airflow through the fan mount.
+
+FIX: the throat cutter is now centered on the flange at z=flange_t/2, so it
+cuts fully through (z=-1..6).
+
+VERIFIED:
+- Section volume z=0..2.5 = 4,896 mm^3 and z=2.5..5 = 4,962 mm^3, both
+  matching the expected flange-ring-only value of 4,920 mm^3 (throat open).
+- STL is watertight, 1 body, 0 degenerate triangles, z min = 0.
+- Volume 80,992 -> 67,223 mm^3; PLA mass 100.4 g -> 83.4 g.
+- Overhang area below 30 deg: 7,372 -> 1,863 mm^2.
+
+PRINT fixed/fan_adapter_fixed.stl — not stl/fan_adapter.stl.
+Original source remains at ../scad/fan_adapter.scad; corrected source is
+fan_adapter_fixed.scad (single-line change in fan_flange_base()).

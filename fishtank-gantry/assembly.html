@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Fish tank gantry — assembly</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root { --bg:#16181c; --panel:#22262c; --text:#e6e6e6; --muted:#98a0aa; --line:#3a4048; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; height:100%; background:var(--bg); color:var(--text);
+              font:14px/1.4 system-ui,Segoe UI,Roboto,sans-serif; overflow:hidden; }
+  #app { display:grid; grid-template-columns:270px 1fr; grid-template-rows:46px 1fr; height:100%; }
+  header { grid-column:1/-1; display:flex; align-items:center; gap:10px; padding:0 14px;
+           background:var(--panel); border-bottom:1px solid var(--line); }
+  header h1 { font-size:14px; margin:0; font-weight:600; letter-spacing:.2px; }
+  header .spacer { flex:1; }
+  button { background:#343a42; color:var(--text); border:1px solid #4a525c;
+           border-radius:6px; padding:6px 10px; cursor:pointer; font:inherit; }
+  button:hover { background:#414954; }
+  #side { background:var(--panel); border-right:1px solid var(--line); padding:12px; overflow:auto; }
+  #side h2 { font-size:11px; text-transform:uppercase; letter-spacing:.8px; color:var(--muted);
+             margin:4px 0 8px; }
+  .part { display:flex; align-items:center; gap:8px; padding:4px 6px; border-radius:5px;
+          cursor:pointer; user-select:none; }
+  .part:hover { background:#2d333b; }
+  .part input { accent-color:#4ea1ff; }
+  .swatch { width:12px; height:12px; border-radius:3px; flex:none; }
+  .part span { font-size:12.5px; }
+  #canvas-wrap { position:relative; }
+  #canvas { width:100%; height:100%; display:block; }
+  #hud { position:absolute; left:14px; bottom:12px; color:var(--muted); font-size:12px;
+         background:rgba(0,0,0,.35); padding:6px 9px; border-radius:6px; pointer-events:none; }
+  #legend { margin-top:14px; padding-top:10px; border-top:1px solid var(--line);
+            color:var(--muted); font-size:11.5px; line-height:1.55; }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>Fish tank gantry — assembly concept</h1>
+    <span class="spacer"></span>
+    <button id="reset">Reset view</button>
+    <button id="tankBtn">Hide tank outline</button>
+  </header>
+  <aside id="side">
+    <h2>Parts</h2>
+    <div id="parts"></div>
+    <div id="legend">
+      Drag to orbit · scroll to zoom · right-drag to pan.<br>
+      This is the concept assembly, not a print-ready split.
+      Rail and leg parts are still full length.
+    </div>
+  </aside>
+  <div id="canvas-wrap">
+    <canvas id="canvas"></canvas>
+    <div id="hud">Loading…</div>
+  </div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "../stl-markup/lib/three.module.js",
+    "three/addons/": "../stl-markup/lib/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from '../stl-markup/lib/OrbitControls.js';
+import { STLLoader } from '../stl-markup/lib/STLLoader.js';
+
+const PARTS = [
+  { name:'Rail left',            file:'stl/asm/asm_rail_left.stl',    color:0x3a6bd1 },
+  { name:'Rail right',           file:'stl/asm/asm_rail_right.stl',   color:0x3a6bd1 },
+  { name:'Left leg pair',        file:'stl/asm/asm_leg_left.stl',     color:0x3fae62 },
+  { name:'Right leg pair',       file:'stl/asm/asm_leg_right.stl',    color:0x3fae62 },
+  { name:'Bridge frame',         file:'stl/asm/asm_bridge.stl',       color:0xf08a24 },
+  { name:'Platform',             file:'stl/asm/asm_platform.stl',     color:0xf0d43a },
+  { name:'Guide rods + screw',   file:'stl/asm/asm_rods.stl',         color:0xb8bcc4 },
+  { name:'Span turnbuckle',      file:'stl/asm/asm_span_screw.stl',   color:0xd84b3a },
+  { name:'Height crank',         file:'stl/asm/asm_crank.stl',        color:0xd84b3a },
+  { name:'Platform nut',         file:'stl/asm/asm_platform_nut.stl', color:0xb8bcc4 },
+  { name:'Lock collar',          file:'stl/asm/asm_lock_collar.stl',  color:0xd84b3a },
+  { name:'Guide bushings',       file:'stl/asm/asm_bushings.stl',     color:0xb8bcc4 },
+];
+
+const canvas = document.getElementById('canvas');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias:true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+renderer.setClearColor(0x16181c, 1);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0x16181c, 900, 2000);
+const camera = new THREE.PerspectiveCamera(35, 1, 1, 5000);
+camera.up.set(0, 0, 1);
+camera.position.set(420, -520, 380);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+
+// lights
+scene.add(new THREE.HemisphereLight(0xdde8ff, 0x30343a, 1.15));
+const key = new THREE.DirectionalLight(0xffffff, 2.1);
+key.position.set(300, -450, 600);
+scene.add(key);
+const fill = new THREE.DirectionalLight(0xbcd4ff, 0.9);
+fill.position.set(-400, 300, 200);
+scene.add(fill);
+
+// tank outline for context: 12.5" x 24" x 16", rim plane at Z=0
+const IN = 25.4;
+const tank = new THREE.Group();
+{
+  const w = 12.5*IN, l = 24*IN, h = 16*IN;
+  const geo = new THREE.BoxGeometry(w, l, h);
+  const edges = new THREE.EdgesGeometry(geo);
+  const mat = new THREE.LineBasicMaterial({ color:0x5f7f91, transparent:true, opacity:0.55 });
+  const box = new THREE.LineSegments(edges, mat);
+  box.position.set(0, 0, -h/2);
+  tank.add(box);
+  const rim = new THREE.LineSegments(
+    new THREE.EdgesGeometry(new THREE.BoxGeometry(w, l, 1)),
+    new THREE.LineBasicMaterial({ color:0x82a8ba, transparent:true, opacity:0.8 })
+  );
+  rim.position.set(0, 0, 0);
+  tank.add(rim);
+}
+scene.add(tank);
+
+const group = new THREE.Group();
+scene.add(group);
+const loader = new STLLoader();
+const checkboxByPart = new Map();
+const box = new THREE.Box3();
+
+function addPart(part) {
+  loader.load(part.file, geo => {
+    geo.computeVertexNormals();
+    const mat = new THREE.MeshStandardMaterial({
+      color: part.color, metalness: 0.05, roughness: 0.62,
+      side: THREE.DoubleSide,
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.name = part.name;
+    group.add(mesh);
+    geo.computeBoundingBox();
+    box.union(geo.boundingBox);
+    fitCamera();
+    updateHud();
+  }, undefined, err => {
+    document.getElementById('hud').textContent = `Failed to load ${part.name}`;
+    console.error(err);
+  });
+}
+
+function fitCamera() {
+  if (box.isEmpty()) return;
+  const center = box.getCenter(new THREE.Vector3());
+  const size = box.getSize(new THREE.Vector3());
+  const radius = size.length() * 0.5;
+  controls.target.copy(center);
+  const dir = new THREE.Vector3(0.75, -1.0, 0.55).normalize();
+  camera.position.copy(center).addScaledVector(dir, radius * 3.4);
+  camera.near = Math.max(1, radius / 100);
+  camera.far = radius * 20;
+  camera.updateProjectionMatrix();
+  controls.update();
+}
+
+function updateHud() {
+  const n = group.children.length;
+  document.getElementById('hud').textContent =
+    `${n}/${PARTS.length} parts loaded · concept assembly`;
+}
+
+// sidebar
+const partsEl = document.getElementById('parts');
+for (const p of PARTS) {
+  const row = document.createElement('label');
+  row.className = 'part';
+  const cb = document.createElement('input');
+  cb.type = 'checkbox';
+  cb.checked = true;
+  cb.addEventListener('change', () => {
+    for (const m of group.children) {
+      if (m.name === p.name) m.visible = cb.checked;
+    }
+  });
+  checkboxByPart.set(p.name, cb);
+  const sw = document.createElement('span');
+  sw.className = 'swatch';
+  sw.style.background = '#' + p.color.toString(16).padStart(6, '0');
+  const name = document.createElement('span');
+  name.textContent = p.name;
+  row.append(cb, sw, name);
+  partsEl.append(row);
+  addPart(p);
+}
+
+document.getElementById('reset').addEventListener('click', fitCamera);
+document.getElementById('tankBtn').addEventListener('click', (e) => {
+  tank.visible = !tank.visible;
+  e.target.textContent = tank.visible ? 'Hide tank outline' : 'Show tank outline';
+});
+
+function resize() {
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  if (canvas.width !== w || canvas.height !== h) {
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+}
+new ResizeObserver(resize).observe(canvas);
+
+// ground grid at the rim plane (Z=0)
+const grid = new THREE.GridHelper(1200, 24, 0x3a4450, 0x2a3138);
+grid.rotation.x = Math.PI / 2;
+grid.position.z = -0.2;
+scene.add(grid);
+
+function animate() {
+  resize();
+  controls.update();
+  renderer.render(scene, camera);
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+</body>
+</html>

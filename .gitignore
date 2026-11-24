@@ -1,0 +1,21 @@
+# Build artifacts and working state
+build/
+*.gcode
+*.gcode.3mf
+*.3mf.bak
+*.bak
+
+# Python / env
+.venv/
+__pycache__/
+*.pyc
+
+# Large regenerable intermediates
+*.npy
+*.npz
+
+# AppImages and downloaded binaries
+*.AppImage
+
+# Temp dir created by make_3mf.py
+project/
