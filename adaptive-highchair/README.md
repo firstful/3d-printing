@@ -14,10 +14,10 @@ off-the-shelf tube/wood stock, rather than a fully printed chair.
 - `RESEARCH.md` — commercial product specs and extracted design inputs
 - `OFF_THE_SHELF.md` — frame hardware, size-adjustment parts, strap materials
 - `DESIGN_NOTES.md` — requirements and planned architecture
-- `BOM.md` — non-printed parts (3/4" tube, 1" webbing, M5 screws) and tools
+- `BOM.md` — non-printed parts (3/4" tube, 1" webbing, 1/4-20 bolts) and tools
 - `params.scad` — all design dimensions (mm), edit this first
 - `adaptive-highchair.scad` — concept geometry; `include`s `params.scad`
-- `nut_insert.scad` — captive M5 nut insert for 3/4" tube (no tapping)
+- `nut_insert.scad` — captive 1/4-20 nut insert for 3/4" tube (no tapping)
 - `drill_jig.scad` — printed drill guide for the insert
 - `render.sh` — regenerates `preview.png` from the `.scad`
 

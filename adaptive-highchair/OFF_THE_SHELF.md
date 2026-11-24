@@ -2,7 +2,7 @@
 
 Research date: 2026-11-24 (Camoufox). Constraint from the operator: material
 must be buyable at Home Depot. Cutting is allowed: straight tube cuts,
-webbing cut to length with heat-sealed ends, and M5 through-bolts with
+webbing cut to length with heat-sealed ends, and 1/4-20 through-bolts with
 captive inserts (no tapping). Legs splay outward for stability.
 
 ## Stock list (Home Depot)
@@ -12,7 +12,7 @@ captive inserts (no tapping). Legs splay outward for stability.
 | Legs | [Everbilt 3/4 in. x 3 ft. Aluminum Square Tube, model 6605](https://www.homedepot.com/p/Everbilt-3-4-in-x-3-ft-Aluminum-Square-Tube-6605/300918653) | 36" (914 mm), 3/4" square, 1/16" wall | ~$14.85 each | 4 legs cut to 760 mm — see `params.scad` |
 | Longer stock | [Everbilt 3/4 in. x 6 ft. Aluminum Square Tube, model 6607](https://www.homedepot.com/p/Everbilt-3-4-in-x-6-ft-Aluminum-Square-Tube-Metal-Stock-6607/340451342) | 72" (1829 mm) | ~$27.58 | Source for the 450 mm rails (one 6 ft tube yields 4 rails) |
 | Straps | [1 in. x 10 ft. 400 lb Cam Buckle Tie-Down](https://www.homedepot.com/b/Tools-Tie-Downs/Cam-Buckle-Lashing-Strap/N-5yc1vZc2b7) (Husky / Keeper / EVEREST) | 1" webbing, 10–15 ft | ~$8–$15 | Non-critical retaining straps only |
-| Fasteners | M5 × 0.8 socket-head cap screws, 16 mm and 20 mm, Nyloc nuts, washers | Aisle stock | — | Through both tube walls; captive nut via `nut_insert.scad` |
+| Fasteners | [Everbilt 1/4-20 × 1" hex bolts](https://www.homedepot.com/p/Everbilt-1-4-in-20-x-1-in-Zinc-Plated-Hex-Bolt-800596/204633241), 1/4-20 Nyloc nuts, 1/4" washers, 17/64" bit | Aisle stock | — | Drilled clearance hole through one tube wall; captive nut via `nut_insert.scad` |
 | Webbing (yardage) | [1 in. nylon webbing kit](https://www.walmart.com/search?q=1+inch+nylon+webbing+by+the+yard) or similar | 1" (25 mm) | ~$15 for 6 yd | For printed strap anchors; heat-seal cut ends |
 
 Home Depot stocks 3/4" and 1" square tube in 3 ft, 4 ft, 6 ft and 8 ft lengths;
@@ -28,7 +28,7 @@ is listed as "can be telescoped."
   top of legs 400 × 460 mm, horizontal run ~120 mm per axis on each leg.
   With 760 mm legs the vertical height is ~740 mm.
 - **Hubs:** printed clamp blocks with angled sockets receive the legs at the
-  splay angle. M5 through-bolts lock each joint; a printed captive-nut
+  splay angle. 1/4-20 through-bolts lock each joint; a printed captive-nut
   insert (`nut_insert.scad`) holds the Nyloc nut inside the tube. The printed
   angle removes any need to mitre the tube ends.
 - **Rails:** 450 mm pieces of 3/4" tube span between legs. Because the legs

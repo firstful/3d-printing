@@ -25,7 +25,7 @@ module drill_jig() {
         // Drill guide hole, perpendicular to the tube.
         translate([0, JIG_H / 2, HOLE_Z])
             rotate([0, 90, 0])
-                cylinder(h = JIG_W + 2, r = CLEAR_HOLE_D / 2, center = true);
+                cylinder(h = JIG_W + 2, r = BOLT_CLEAR_D / 2, center = true);
     }
 }
 

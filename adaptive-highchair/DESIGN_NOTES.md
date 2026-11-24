@@ -21,12 +21,12 @@
 
 Revised 2026-11-24: the frame is **3/4" square aluminium tube from Home Depot**,
 cut to length (straight cuts only) with a printed miter jig. All four legs
-splay outward ~10° for stability. Joints use M5 through-bolts with Nyloc nuts
-captured by printed inserts (`nut_insert.scad`) — no tapping, no drilling
-beyond clearance holes.
+splay outward ~10° for stability. Joints use 1/4-20 through-bolts with Nyloc
+nuts captured by printed inserts (`nut_insert.scad`) — no tapping, no drilling
+beyond clearance holes. All thread sizes are centralised in `params.scad`.
 
 1. **Frame** — four 760 mm legs, splayed ~10°, plus 450 mm rail pieces.
-   Printed hubs with angled sockets set the splay; M5 through-bolts lock each
+   Printed hubs with angled sockets set the splay; 1/4-20 through-bolts lock each
    joint. Footprint 640 × 700 mm, leg tops 400 × 460 mm, frame height ~740 mm.
 2. **Seat module** — printed pan with slots for depth and width inserts;
    pivots on the frame for tilt.
@@ -45,7 +45,7 @@ beyond clearance holes.
 - Target growth range: 6–36 months only, or extend to Rifton-style paediatric
   sizing?
 - Folding/stacking needed, or static frame acceptable?
-- Required proof-load factor for M5 joints and printed clamp plates.
+- Required proof-load factor for 1/4-20 joints and printed clamp plates.
 - Print material: PETG for brackets vs. PA/GF for load-bearing clamps.
 
 ## Next steps

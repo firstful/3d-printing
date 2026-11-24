@@ -44,9 +44,23 @@ TRAY_H        = 700;
 TRAY_NOTCH_W  = 300;
 TRAY_NOTCH_D  = 100;
 
-/* [Hardware / strap] */
-HARDWARE_D    = 5;     // M5 screws — see BOM.md
-CLEAR_HOLE_D  = 5.2;   // M5 clearance; drill only, no tapping
+/* [Thread / fastener — change this block to swap hardware] */
+// Current: 1/4-20 UNC hex bolt + Nyloc nut, captive in nut_insert.scad.
+// To go back to M5 x 0.8, use:
+//   THREAD_NAME="M5 x 0.8"; THREAD_MAJOR=5; THREAD_PITCH=0.8;
+//   NUT_AF=8.0; NUT_H=5.0; BOLT_CLEAR_D=5.2; BOLT_LEN=20;
+THREAD_NAME   = "1/4-20 UNC";
+THREAD_MAJOR  = 6.35;   // nominal major diameter = 0.25"
+THREAD_TPI    = 20;     // threads per inch (imperial)
+THREAD_PITCH  = 25.4 / THREAD_TPI;  // 1.27 mm
+NUT_AF        = 11.11;  // 7/16" across flats
+NUT_H         = 8.0;    // Nyloc height; pocket uses NUT_H + NUT_POCKET_CLEAR
+NUT_POCKET_CLEAR = 0.30;  // extra hex pocket depth / across-flats clearance
+BOLT_CLEAR_D  = 6.75;   // 17/64" drill; drill only, no tapping
+BOLT_LEN      = 25.4;   // 1" bolt: reaches the nut inside the tube
+WASHER_T      = 1.6;
+
+/* [Strap] */
 INSERT_L      = 25;    // captive-nut insert length (nut_insert.scad)
 STRAP_W       = 25;    // 1" webbing, heat-seal cut ends
 STRAP_CLEAR   = 1;
