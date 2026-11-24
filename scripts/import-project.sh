@@ -62,11 +62,13 @@ excludes=(
 )
 
 rsync_args=(-a --info=stats2 "${excludes[@]}")
+# The committed README is usually richer than the working copy's. Never clobber
+# it on refresh; delete it by hand first if the working copy's is authoritative.
+if [ -f "$dest/README.md" ]; then
+  rsync_args+=(--exclude 'README.md')
+  printf 'note: keeping existing %s/README.md (delete it first to import the source copy)\n' "$dest_name"
+fi
 if [ "$mirror" -eq 1 ]; then
-  if [ -f "$dest/README.md" ]; then
-    rsync_args+=(--exclude 'README.md')
-    printf 'note: keeping existing %s/README.md (remove it first to mirror over it)\n' "$dest_name"
-  fi
   rsync_args+=(--delete)
 fi
 
