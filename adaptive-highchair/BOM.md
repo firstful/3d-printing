@@ -19,8 +19,8 @@ stock before cutting. All thread dimensions live in `params.scad` — edit the
 |---|---|---|
 | `THREAD_NAME` | `1/4-20 UNC` | Label only |
 | `THREAD_MAJOR` | 6.35 mm | Nominal bolt diameter (0.25") |
-| `THREAD_TPI` | 20 | Threads per inch |
-| `THREAD_PITCH` | 1.27 mm | Derived: 25.4 / TPI |
+| `THREAD_PITCH` | 1.27 mm | mm per thread (1/4-20) |
+| `THREAD_TPI` | 20 | Derived: 25.4 / pitch |
 | `NUT_AF` | 11.11 mm | 7/16" across flats |
 | `NUT_H` | 8.0 mm | Nyloc height (pocket adds `NUT_POCKET_CLEAR`) |
 | `BOLT_CLEAR_D` | 6.75 mm | 17/64" drill, through one tube wall |
@@ -28,8 +28,8 @@ stock before cutting. All thread dimensions live in `params.scad` — edit the
 
 To switch back to M5 × 0.8, change only that block in `params.scad`:
 `THREAD_MAJOR=5`, `THREAD_PITCH=0.8`, `NUT_AF=8.0`, `NUT_H=5.0`,
-`BOLT_CLEAR_D=5.2`, `BOLT_LEN=20` (and set `THREAD_TPI` to 0 or update the
-label). Both `nut_insert.scad` and `drill_jig.scad` read these values.
+`BOLT_CLEAR_D=5.2`, `BOLT_LEN=20`; `THREAD_TPI` is derived automatically.
+Both `nut_insert.scad` and `drill_jig.scad` read these values.
 
 ## Why 1/4-20 instead of M5
 

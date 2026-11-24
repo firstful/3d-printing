@@ -49,10 +49,11 @@ TRAY_NOTCH_D  = 100;
 // To go back to M5 x 0.8, use:
 //   THREAD_NAME="M5 x 0.8"; THREAD_MAJOR=5; THREAD_PITCH=0.8;
 //   NUT_AF=8.0; NUT_H=5.0; BOLT_CLEAR_D=5.2; BOLT_LEN=20;
+//   THREAD_TPI is derived automatically.
 THREAD_NAME   = "1/4-20 UNC";
 THREAD_MAJOR  = 6.35;   // nominal major diameter = 0.25"
-THREAD_TPI    = 20;     // threads per inch (imperial)
-THREAD_PITCH  = 25.4 / THREAD_TPI;  // 1.27 mm
+THREAD_PITCH  = 1.27;   // mm per thread; 1/4-20 = 25.4/20
+THREAD_TPI    = 25.4 / THREAD_PITCH;  // derived (20 for 1/4-20)
 NUT_AF        = 11.11;  // 7/16" across flats
 NUT_H         = 8.0;    // Nyloc height; pocket uses NUT_H + NUT_POCKET_CLEAR
 NUT_POCKET_CLEAR = 0.30;  // extra hex pocket depth / across-flats clearance
