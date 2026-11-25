@@ -22,7 +22,7 @@ bot_half_h = half_web + flange_t;           // 8.0
 // screw positions along length (5" apart, 0.5" from each end)
 screw_z1   = 12.7;      // 0.5"
 screw_z2   = 12.7 + 127.0;  // 5.5"
-screw_xs   = [-4.0, 4.0];   // 2 screws across the width
+screw_xs   = [0.0];           // 1 screw per position
 
 // screw (M4-ish printed)
 screw_d    = 4.0;
@@ -72,16 +72,10 @@ module top_half() {
         // threaded holes (top access): M4 threads, 8mm deep
         for (sz = [screw_z1, screw_z2])
             for (sx = screw_xs)
-                translate([sx, flange_t/2, sz])
+                translate([sx, top_half_h, sz])
                     rotate([90, 0, 0])
-                        metric_thread(diameter = screw_d, pitch = screw_pitch,
-                                      length = screw_len, thread_size = 1.0, internal = true);
-        // clearance holes (bottom access): through the web into top half
-        for (sz = [screw_z1, screw_z2])
-            for (sx = screw_xs)
-                translate([sx, flange_t + half_web/2, sz])
-                    rotate([90, 0, 0])
-                        cylinder(h = half_web + 2, r = clearance_d/2, $fn=24);
+                        metric_thread(diameter = 4.6, pitch = screw_pitch,
+                                      length = screw_len, thread_size = 1.0);
     }
 }
 
@@ -90,19 +84,12 @@ module bottom_half() {
         translate([0, 0, 0])
             linear_extrude(height = beam_len)
                 bottom_half_profile();
-        // threaded holes (bottom access)
+        // clearance holes (top access): through the bottom half
         for (sz = [screw_z1, screw_z2])
             for (sx = screw_xs)
-                translate([sx, half_web + flange_t/2, sz])
+                translate([sx, 0, sz])
                     rotate([-90, 0, 0])
-                        metric_thread(diameter = screw_d, pitch = screw_pitch,
-                                      length = screw_len, thread_size = 1.0, internal = true);
-        // clearance holes (top access): through the web into bottom half
-        for (sz = [screw_z1, screw_z2])
-            for (sx = screw_xs)
-                translate([sx, half_web/2, sz])
-                    rotate([-90, 0, 0])
-                        cylinder(h = half_web + 2, r = clearance_d/2, $fn=24);
+                        cylinder(h = total_h/2 + 2, r = clearance_d/2, $fn=24);
     }
 }
 
