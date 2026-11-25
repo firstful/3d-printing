@@ -1,21 +1,16 @@
 // ============================================================================
 //  hex_ramp_insert — screw-down registration post for the hex ramp's top row
 //
-//  A hex post that drops into a top-row hole (the row past the vertical jump,
-//  over the rolled transition), sits on the curved underside, and stands
-//  10 mm proud of the driving surface.  One countersunk screw down the middle
-//  ties it to the transition.  Nothing else - no slider.
-//
-//  Remove the ramp and what is left is a pair of 10 mm posts you can drop the
-//  ramp back over.
+//  Solid hex prism: bottom follows the measured transition arc, top is a flat
+//  plane coplanar with (parallel to) the driving surface, 10 mm above it.
+//  One bore down the centre, vertical to that top plane, with a countersink
+//  colinear with it.  One countersunk screw into the transition underneath.
 //
 //  Measured reference (ramp_half_hex.stl)
 //    hole            15.86 mm across flats, vertical through-bore, x = +16.19
 //    top surface     plane y = 0.130691*x + 13.8003   (7.446 deg)
-//    underside       the rolled transition: arc R = 118.82, centre (63.0, -96.64)
-//    band thickness  3.42 mm at the hole centre (0.9 .. 6.6 across the hex)
-//
-//  Print: lying on a hex flat (as exported).  No supports.
+//    underside       rolled transition: arc R = 118.82, centre (63.0, -96.64)
+//    band thickness  3.42 mm at the hole centre
 // ============================================================================
 
 // ------------------------------ parameters ---------------------------------
@@ -34,10 +29,7 @@ arc_cx    = 63.00 - hole_x;                // arc centre in part-local coords
 arc_cy    = -96.64 - y_face;
 arc_r     = 118.82;
 
-// screw detent (M3 countersunk) - offset across the ramp width (Z),
-// where the band is thickest, not toward the thin lip edge
-screw_x   = 0.0;
-screw_z   = 3.0;
+// screw detent (M3 countersunk), on the hole axis
 screw_d   = 3.4;
 cs_d      = 6.0;
 cs_depth  = 1.5;
@@ -60,26 +52,34 @@ module below_arc() {
 
 // -------------------------------- geometry ---------------------------------
 module body() {
+    // top is a flat plane parallel to the driving surface, boss_h above it
+    top_off = boss_h / cos(theta);
     difference() {
         intersection() {
+            // vertical hex prism through the bore
             translate([0, -14, 0]) rotate([-90, 0, 0])
                 linear_extrude(height = 28) hex2d(insert_af);
-            // flat top, boss_h above the surface at the hole centre
-            translate([-20, -14, -20]) cube([40, boss_h + 14, 40]);
+            // top half-space: everything below the top plane
+            rotate([0, 0, theta])
+                translate([-200, -200, -200]) cube([400, 200 + top_off, 400]);
         }
+        // remove everything above the curved underside
         below_arc();
     }
 }
 
 module part() {
+    top_off = boss_h / cos(theta);
     difference() {
         body();
-        // screw clearance, vertical, out through the curved underside
-        translate([screw_x, -14, screw_z]) rotate([-90, 0, 0])
-            cylinder(h = boss_h + 14, r = screw_d / 2);
-        // countersink in the flat top
-        translate([screw_x, boss_h - cs_depth, screw_z])
-            cylinder(h = cs_depth + 0.2, r1 = screw_d / 2, r2 = cs_d / 2);
+        // bore: straight down the centre, along the top plane's normal
+        rotate([0, 0, theta])
+            translate([0, top_off, 0]) rotate([-90, 0, 0])
+                cylinder(h = top_off + 16, r = screw_d / 2);
+        // countersink colinear with the bore
+        rotate([0, 0, theta])
+            translate([0, top_off, 0]) rotate([-90, 0, 0])
+                cylinder(h = cs_depth + 0.2, r1 = cs_d / 2, r2 = screw_d / 2);
     }
 }
 
