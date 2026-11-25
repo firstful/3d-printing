@@ -2,9 +2,9 @@
 //  hex_ramp_insert — screw-down registration post for the hex ramp's top row
 //
 //  Solid hex prism: bottom follows the measured transition arc, top is a flat
-//  plane coplanar with (parallel to) the driving surface, 10 mm above it.
-//  One bore down the centre, vertical to that top plane, with a countersink
-//  colinear with it.  One countersunk screw into the transition underneath.
+//  horizontal plane 10 mm above the surface at the hole centre.  One vertical
+//  bore down the centre, all the way through, with a countersink colinear
+//  with it.  One countersunk screw into the transition underneath.
 //
 //  Measured reference (ramp_half_hex.stl)
 //    hole            15.86 mm across flats, vertical through-bore, x = +16.19
@@ -29,7 +29,7 @@ arc_cx    = 63.00 - hole_x;                // arc centre in part-local coords
 arc_cy    = -96.64 - y_face;
 arc_r     = 118.82;
 
-// screw detent (M3 countersunk), on the hole axis
+// screw detent (M3 countersunk), on the hole axis (vertical)
 screw_d   = 3.4;
 cs_d      = 6.0;
 cs_depth  = 1.5;
@@ -42,44 +42,48 @@ module hex2d(af) {
     polygon([for (k = [0:5]) [R * cos(60 * k), R * sin(60 * k)]]);
 }
 
-// half-space below the rolled transition's underside (the measured arc)
-module below_arc() {
+// region below the rolled transition's underside (the measured arc)
+module arc_below() {
     R = arc_r; CX = arc_cx; CY = arc_cy;
-    pts = [for (x = [-20:0.5:40]) [x, CY + sqrt(R * R - (x - CX) * (x - CX))]];
-    translate([0, 0, -40]) linear_extrude(height = 80)
+    pts = [for (x = [-20:0.5:40]) [x, CY + sqrt(max(0.01, R * R - (x - CX) * (x - CX)))] ];
+    translate([0, 0, -20]) linear_extrude(height = 40)
         polygon(concat(pts, [[40, -40], [-20, -40]]));
 }
 
 // -------------------------------- geometry ---------------------------------
 module body() {
-    // top is a flat plane parallel to the driving surface, boss_h above it
-    top_off = boss_h / cos(theta);
     difference() {
-        intersection() {
-            // vertical hex prism through the bore
-            translate([0, -14, 0]) rotate([-90, 0, 0])
-                linear_extrude(height = 28) hex2d(insert_af);
-            // top half-space: everything below the top plane
-            rotate([0, 0, theta])
-                translate([-200, -200, -200]) cube([400, 200 + top_off, 400]);
-        }
-        // remove everything above the curved underside
-        below_arc();
+        // vertical hex prism, 28 mm tall (covers the full range)
+        translate([0, -14, 0]) rotate([-90, 0, 0])
+            linear_extrude(height = 28) hex2d(insert_af);
+        // remove everything above the flat top (boss_h above the surface)
+        translate([-20, boss_h, -20]) cube([40, 20, 40]);
+        // remove everything below the arc (keep above it)
+        // by subtracting a big block below the arc
+    }
+    // intersect with above_arc to keep only the part above the arc
+}
+
+// simpler: build as intersection of hex prism with above-arc region, then cut top
+module part_solid() {
+    difference() {
+        translate([0, -14, 0]) rotate([-90, 0, 0])
+            linear_extrude(height = 28) hex2d(insert_af);
+        arc_below();
     }
 }
 
 module part() {
-    top_off = boss_h / cos(theta);
     difference() {
-        body();
-        // bore: straight down the centre, along the top plane's normal
-        rotate([0, 0, theta])
-            translate([0, top_off, 0]) rotate([-90, 0, 0])
-                cylinder(h = top_off + 16, r = screw_d / 2);
-        // countersink colinear with the bore
-        rotate([0, 0, theta])
-            translate([0, top_off, 0]) rotate([-90, 0, 0])
-                cylinder(h = cs_depth + 0.2, r1 = cs_d / 2, r2 = screw_d / 2);
+        part_solid();
+        // flat top: remove everything above boss_h
+        translate([-20, boss_h, -20]) cube([40, 20, 40]);
+        // vertical bore down the centre
+        translate([0, 20, 0]) rotate([90, 0, 0])
+            cylinder(h = 40, r = screw_d / 2);
+        // countersink at the top, colinear with the bore
+        translate([0, boss_h, 0]) rotate([90, 0, 0])
+            cylinder(h = cs_depth + 0.2, r1 = cs_d / 2, r2 = screw_d / 2);
     }
 }
 
