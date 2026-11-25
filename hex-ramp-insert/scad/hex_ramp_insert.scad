@@ -34,8 +34,10 @@ arc_cx    = 63.00 - hole_x;                // arc centre in part-local coords
 arc_cy    = -96.64 - y_face;
 arc_r     = 118.82;
 
-// screw detent (M3 countersunk)
-screw_x   = 3.0;
+// screw detent (M3 countersunk) - offset across the ramp width (Z),
+// where the band is thickest, not toward the thin lip edge
+screw_x   = 0.0;
+screw_z   = 3.0;
 screw_d   = 3.4;
 cs_d      = 6.0;
 cs_depth  = 1.5;
@@ -73,10 +75,10 @@ module part() {
     difference() {
         body();
         // screw clearance, vertical, out through the curved underside
-        translate([screw_x, -14, 0]) rotate([-90, 0, 0])
+        translate([screw_x, -14, screw_z]) rotate([-90, 0, 0])
             cylinder(h = boss_h + 14, r = screw_d / 2);
         // countersink in the flat top
-        translate([screw_x, boss_h - cs_depth, 0])
+        translate([screw_x, boss_h - cs_depth, screw_z])
             cylinder(h = cs_depth + 0.2, r1 = screw_d / 2, r2 = cs_d / 2);
     }
 }
