@@ -13,7 +13,7 @@ beam_len   = 152.4;     // 6 inches
 flange_w   = 15.0;      // flange width
 flange_t   = 4.0;       // flange thickness
 web_w      = 11.0;      // web width
-web_h      = 8.0;       // web height
+web_h      = 6.0;       // web height
 half_web   = web_h / 2; // 4.0
 total_h    = flange_t + web_h + flange_t;  // 16.0
 top_half_h = flange_t + half_web;           // 8.0
@@ -27,7 +27,8 @@ screw_xs   = [0.0];           // 1 screw per position
 // screw (M4-ish printed)
 screw_d    = 4.0;
 screw_pitch = 1.5;
-screw_len  = 8.0;       // engagement per half
+screw_len  = 16.0;      // total screw length (thread + shaft)
+hole_depth = flange_t + web_h/2;  // threaded hole depth (top half thickness)
 clearance_d = 4.4;
 
 $fa = 2; $fs = 0.4;
@@ -75,7 +76,7 @@ module top_half() {
                 translate([sx, top_half_h, sz])
                     rotate([90, 0, 0])
                         metric_thread(diameter = 4.6, pitch = screw_pitch,
-                                      length = screw_len, thread_size = 1.0);
+                                      length = hole_depth, thread_size = 1.0);
     }
 }
 
@@ -95,12 +96,17 @@ module bottom_half() {
 
 module screw() {
     metric_thread(diameter = screw_d, pitch = screw_pitch,
-                  length = screw_len, thread_size = 1.0);
+                  length = hole_depth, thread_size = 1.0);
+    // unthreaded shaft
+    translate([0, 0, hole_depth])
+        cylinder(h = screw_len - hole_depth, r = screw_d/2, $fn=24);
+    // flathead slot head
     translate([0, 0, screw_len])
-        cylinder(h = 3, r = screw_d/2 + 1.5, $fn=24);  // head
-    // hex socket
-    translate([0, 0, screw_len + 1.5])
-        cylinder(h = 1.6, r = 2.0, $fn=6);
+        difference() {
+            cylinder(h = 2.5, r = screw_d/2 + 2.0, $fn=32);
+            translate([0, 0, 1.25])
+                cube([screw_d + 4.0, 0.8, 2.6], center = true);
+        }
 }
 
 // -------------------------------- modes ------------------------------------
